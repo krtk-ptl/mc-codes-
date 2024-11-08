@@ -1,0 +1,1156 @@
+﻿MC (PIC) Codes
+
+--------------------------------------------------------------------------------------------------
+Features of PIC18fxx -
+
+The PIC18Fxx series is a family of 8-bit microcontrollers by Microchip Technology known for their enhanced performance, higher speed, and additional peripherals. Here are some key features:
+
+High Performance: The PIC18F series uses an enhanced RISC architecture, with instructions that execute in a single cycle, providing up to 16 MIPS (Million Instructions Per Second) at 16 MHz.
+
+Flash Memory: Offers a range of flash memory sizes (from 16 KB to 128 KB), which is reprogrammable and allows for up to 10,000 write/erase cycles.
+
+RAM and EEPROM: Includes up to 4 KB of RAM and up to 1 KB of EEPROM for data storage, with EEPROM being non-volatile for retaining data after power-off.
+
+Enhanced Instruction Set: Supports 77 instructions, including additional commands for better arithmetic, data handling, and bit manipulation.
+
+Interrupt Capability: Features multiple interrupt sources, including high-priority and low-priority interrupts, allowing efficient handling of multiple tasks.
+
+Wide Operating Voltage Range: Operates on 2.0V to 5.5V, making it versatile for various applications.
+
+Integrated Peripherals: Equipped with multiple timers, UARTs, I²C, SPI, ADC (up to 12-bit), PWM, and comparators, allowing it to interface with a variety of sensors and modules.
+
+Low Power Consumption: Supports power-saving modes like Sleep and Idle, along with a watchdog timer for reliable operation.
+
+ICSP (In-Circuit Serial Programming): Allows the microcontroller to be programmed directly in the circuit, simplifying development and testing.
+
+The PIC18Fxx series is commonly used in embedded applications requiring reliable performance, flexibility, and a good range of peripherals, such as in automation, consumer electronics, and industrial control.
+
+----------------------
+
+1) Write an embedded C program  for interfacing button, LED, RELAY & BUZZER as follows
+a) When Switch 0 is pressed,  LED's start chasing from left to right.
+b) When Switch 1 is pressed, LED's start chasing from right to left. 
+
+#include <p18f4550.h> 
+#include "vector_relocate.h"
+void delay(unsigned int time)
+{ 
+unsigned int i,j; 
+for(i=0;i<time;i++)
+{
+       for(j=0;j<710;j++);
+}
+}
+void main(void)
+{
+unsigned int i; 
+unsigned char val=0;
+INTCON2bits.RBPU = 0; 
+ADCON1=0x0F;
+TRISD = 0x00; 
+TRISBbits.TRISB0=1; 
+TRISBbits.TRISB1=1; 
+while(1)
+{
+if(PORTBbits.RB1==0)
+{
+       val=1;
+}
+if(PORTBbits.RB0==0)
+{
+       val=2;
+}
+if(val==1)
+{
+PORTD = 0x80;
+delay(100); 
+for(i=0;i<8;i++)
+{
+PORTD=PORTD>>1;
+delay(100);
+}
+}
+if(val==2)
+{
+PORTD = 0x01;
+delay(100); 
+for(i=0;i<8;i++)
+{
+PORTD=PORTD<<1;
+delay(100);
+}
+}
+}
+}
+
+--------------------------
+
+2) Write an embedded C program  for interfacing button, LED, relay & buzzer as follows
+a) When Switch 0 is pressed,  relay and buzzer is turned ON.
+b) When Switch 1 is pressed, relay and buzzer is turned OFF & Flash LED's. 
+
+#include <p18f4550.h> 
+#include "vector_relocate.h"
+void delay(unsigned int time)
+{ 
+unsigned int i,j; 
+for(i=0;i<time;i++)
+{
+       for(j=0;j<710;j++);
+}
+}
+void main(void)
+{
+unsigned char val=0;
+INTCON2bits.RBPU = 0; 
+ADCON1=0x0F;
+TRISD = 0x00; 
+TRISBbits.TRISB0=1; 
+TRISBbits.TRISB1=1; 
+TRISCbits.TRISC1=0; 
+TRISCbits.TRISC2=0; 
+PORTCbits.RC1=0; 
+PORTCbits.RC2=0;
+while(1)
+{
+if(PORTBbits.RB1==0)
+{
+       val=1;
+}
+if(PORTBbits.RB0==0)
+{
+       val=2;
+}
+if(val==1)
+{
+PORTCbits.RC1=1; 
+PORTCbits.RC2=1; 
+}
+if(val==2)
+{
+PORTCbits.RC1=0; 
+PORTCbits.RC2=0; 
+PORTD = 0x55;
+delay(100); 
+PORTD = 0xAA;
+delay(100); 
+}
+}
+}
+
+---------------------------------
+
+3) Write an embedded C program  for interfacing button, LED, relay & buzzer as follows
+a) When Switch 0 is pressed relay and buzzer is turned ON and LED's start chasing from left to right.
+b) When Switch 1 is pressed relay and buzzer is turned OFF and LED start chasing from right to left.
+
+Code from Kale ma'am
+#include <p18f4550.h> 
+#include "vector_relocate.h"
+void delay(unsigned int time)
+{ 
+unsigned int i,j; 
+for(i=0;i<time;i++)
+{
+       for(j=0;j<710;j++);
+}
+}
+void main(void)
+{
+unsigned int i; 
+unsigned char val=0;
+INTCON2bits.RBPU = 0; 
+ADCON1=0x0F;
+TRISD = 0x00; 
+TRISBbits.TRISB0=1; 
+TRISBbits.TRISB1=1; 
+TRISCbits.TRISC1=0; 
+TRISCbits.TRISC2=0; 
+PORTCbits.RC1=0; 
+PORTCbits.RC2=0;
+while(1)
+{
+if(PORTBbits.RB1==0)
+{
+       val=1;
+}
+if(PORTBbits.RB0==0)
+{
+       val=2;
+}
+if(val==1)
+{
+PORTCbits.RC1=1; 
+PORTCbits.RC2=1; 
+PORTD = 0x80;
+delay(100); 
+for(i=0;i<8;i++)
+{
+PORTD=PORTD>>1;
+delay(100);
+}
+}
+if(val==2)
+{
+PORTCbits.RC1=0; 
+PORTCbits.RC2=0; 
+PORTD = 0x01;
+delay(100); 
+for(i=0;i<8;i++)
+{
+PORTD=PORTD<<1;
+delay(100);
+}
+}
+}
+}
+
+OR
+
+Code from Turuk ma'am
+//Includes 
+#include <p18f4550.h>                      //Include Controller specific .h 
+#include "vector_relocate.h"           //Vector Remapping for USB HID Bootloader 
+//Declarations 
+#define lrbit PORTBbits.RB1             //SW0 interfaced to RB1 
+#define rlbit PORTBbits.RB0            //SW1 interfaced to RB0 
+#define buzzer PORTCbits.RC2        //Buzzer interfaced to RC2 
+#define relay PORTDbits.RD7          //Relay interfaced to RC1 
+
+//Function Prototypes 
+void msdelay (unsigned int time);       //Function for delay 
+//Start of Program Code 
+void main()        //Main Program 
+{ 
+ unsigned char i,val=0;        //Variable to latch the switch condition 
+ INTCON2bits.RBPU=0;       //To Activate the internal pull on PORTB 
+ ADCON1 = 0x0F;                //To disable the all analog inputs 
+ TRISBbits.RB0=1;             //To configure RB0 as input for sensing SW1 
+ TRISBbits.RB1=1;             //To configure RB1 as input for sensing SW0 
+ TRISDbits.TRISD7=0;       //To configure RC1 (relay) as output 
+ TRISCbits.TRISC2=0;       //To configure RC2 (buzzer) as output 
+ TRISA = 0x00;                  //To configure PORTD (LED) as output 
+ 
+ PORTA = 0x00;              //Initial Value for LED 
+ buzzer = 0;                    //Initial Value for Buzzer 
+ relay = 0;                      //Initial Value for Relay 
+while (1)                      //While loop for repeated operation 
+ { 
+ if (lrbit==0)        //To check whether SW0 is pressed
+val = 1;               // Latch the status of switch SW0 
+ if (rlbit==0)       //To check whether SW1 is pressed 
+ val = 2;              // Latch the status of switch SW1 
+ 
+ if (val == 1) 
+ { 
+ buzzer = 1; 
+ relay = 1; 
+ // 6led 
+ // 0010 0000 
+ PORTA = 0x20; 
+ msdelay(50); 
+ for(i=0;i<6;i++) 
+ { 
+ PORTA = PORTA >> 1;       //Shift right by 1 bit 
+ msdelay(50);                    // Make the MSB bit equal to 1 
+ } 
+ } 
+ if (val == 2) 
+ { 
+ buzzer = 0; 
+ relay = 0; 
+ PORTA = 0x01; 
+ // 0000 0001 
+ msdelay(50); 
+ for(i=0;i<6;i++) 
+ { 
+ PORTA = PORTA << 1;     //Shift left by 1 bit 
+ msdelay(50);                   //Make the MSB bit equal to 1 
+ } 
+ } 
+ } 
+} 
+//End of the Program 
+//Function Definitions 
+void msdelay (unsigned int time)            //Function for delay
+{ 
+unsigned int i, j; 
+ for (i = 0; i < time; i++) 
+{
+ for (j = 0; j < 710; j++);          //Calibrated for a 1 ms delay in MPLAB 
+                }
+}
+
+
+--------------------------------
+
+4) Write an embedded C program  for interfacing button, LED, relay & buzzer as follows
+a) When Switch 0 is pressed relay and buzzer is turned ON and LED's start blinking.
+b) When Switch 1 is pressed relay and buzzer is turned OFF and LED start chasing from left to right in a group of two.
+
+#include <p18f4550.h> 
+#include "vector_relocate.h"
+void delay(unsigned int time)
+{ 
+unsigned int i,j; 
+for(i=0;i<time;i++)
+{
+       for(j=0;j<710;j++);
+}
+}
+void main(void)
+{
+unsigned int i; 
+unsigned char val=0;
+INTCON2bits.RBPU = 0; 
+ADCON1=0x0F;
+TRISD = 0x00; 
+TRISBbits.TRISB0=1; 
+TRISBbits.TRISB1=1; 
+TRISCbits.TRISC1=0; 
+TRISCbits.TRISC2=0; 
+PORTCbits.RC1=0; 
+PORTCbits.RC2=0;
+while(1)
+{
+if(PORTBbits.RB1==0)
+{
+       val=1;
+}
+if(PORTBbits.RB0==0)
+{
+       val=2;
+}
+if(val==1)
+{
+PORTCbits.RC1=1; 
+PORTCbits.RC2=1; 
+PORTD = 0xFF;
+delay(100); 
+PORTD = 0x00;
+delay(100); 
+                                }
+if(val==2)
+{
+PORTCbits.RC1=0; 
+PORTCbits.RC2=0; 
+PORTD = 0xC0;           //1100 0000
+delay(100); 
+PORTD = 0x30;           //0011 0000
+delay(100); 
+PORTD = 0x0C;          //0000 1100
+delay(100); 
+PORTD = 0x03;         //0000 0011
+delay(100); 
+}
+}
+}
+
+-----------------------------
+
+5) Write an embedded C program  for interfacing button, LED, relay & buzzer as follows
+a) When Switch 0 is pressed relay and buzzer is turned ON and LED's start blinking alternatively.
+b) When Switch 1 is pressed relay and buzzer is turned OFF and LED start chasing from left to right in a group four.
+
+#include <p18f4550.h> 
+#include "vector_relocate.h"
+void delay(unsigned int time)
+{ 
+unsigned int i,j; 
+for(i=0;i<time;i++)
+{
+       for(j=0;j<710;j++);
+}
+}
+void main(void)
+{
+unsigned int i; 
+unsigned char val=0;
+INTCON2bits.RBPU = 0; 
+ADCON1=0x0F;
+TRISD = 0x00; 
+TRISBbits.TRISB0=1; 
+TRISBbits.TRISB1=1; 
+TRISCbits.TRISC1=0; 
+TRISCbits.TRISC2=0; 
+PORTCbits.RC1=0; 
+PORTCbits.RC2=0;
+while(1)
+{
+if(PORTBbits.RB1==0)
+{
+       val=1;
+}
+if(PORTBbits.RB0==0)
+{
+       val=2;
+}
+if(val==1)
+{
+PORTCbits.RC1=1; 
+PORTCbits.RC2=1; 
+PORTD = 0xFF;
+delay(100); 
+PORTD = 0x00;
+delay(100); 
+}
+if(val==2)
+{
+PORTCbits.RC1=0; 
+PORTCbits.RC2=0; 
+PORTD = 0xF0;           //1111 0000
+delay(100); 
+PORTD = 0x0F;          //0000 1111
+delay(100); 
+}
+}
+}
+
+----------------------------------
+
+6) Write an embedded C program for interfacing an array of 8 LEDs to PIC18F4550. 
+        Implement LED flashing. 
+#include <p18f4550.h> 
+#include "vector_relocate.h"
+void delay(unsigned int time)
+{ 
+unsigned int i,j; 
+for(i=0;i<time;i++)
+{
+       for(j=0;j<710;j++);
+}
+}
+void main(void)
+{
+ADCON1=0x0F;
+TRISD = 0x00; 
+while(1)
+{
+PORTD = 0x55; 
+delay(100); 
+PORTD = 0xAA;
+delay(100); 
+}
+}
+
+-------------------------------------------------------------------------------------------------------------
+
+7) Write an embedded C program to generate square wave of 10Hz using timer0 with interrupt and blink LEDs after a delay of 50ms. Show detailed calculations.
+
+Calculations:
+Fosc=48MHz,   N=16,   F=10Hz
+Tosc=(1/Fosc),    T=(1/2F)=50ms
+x = T / (4*N*Tosc)
+   =  0.05 / 1.33u                                           (u=10^-6)
+x = 37594
+Count value = 65535 + 1 - x  =  27942
+Hex value of 27942 = 6D26
+
+       #include <p18f4550.h>
+       extern void _startup (void);
+       void timer_isr(void);
+       #pragma code RESET_INTERRUPT_VECTOR = 0x1000
+       void _reset (void)
+       {
+       	_asm 
+           	             goto _startup 
+       	_endasm
+       }
+       #pragma code
+       void main(void)
+       {	
+       	ADCON1 = 0x0F; 
+       	INTCON2bits.RBPU=0;        
+       	TRISBbits.TRISB0 = 0; 
+                       TRISD = 0x00;
+       	PORTBbits.RB0 = 0;  
+                       PORTD = 0x00; 	
+       	T0CON = 0x03;		  
+       	TMR0H = 0x6D;         
+       	TMR0L = 0x26;
+       	INTCONbits.TMR0IF = 0; 
+       	INTCONbits.TMR0IE = 1;
+       	INTCONbits.GIE = 1;	
+       	T0CONbits.TMR0ON = 1; 
+       	while(1);             
+       }
+       #pragma code HIGH_INTERRUPT_VECTOR = 0x1008
+       void high_ISR (void)
+       {
+       	_asm 
+       		goto timer_isr
+       	_endasm    
+       }
+       #pragma code
+       ///Timer ISR Function Prototype//
+       #pragma interrupt timer_isr
+       void timer_isr(void)
+       {
+       	TMR0H = 0X6D;  
+       	TMR0L = 0X26;
+       	PORTBbits.RB0 = ~PORTBbits.RB0;
+                       PORTD = ~PORTD; 
+       	INTCONbits.TMR0IF = 0; 
+       }
+--------------------------------------
+The T0CON (Timer 0 Control) register in the PIC18F microcontroller is an 8-bit register that configures the operating mode and behavior of Timer 0. By setting specific bits in the T0CON register, you can control whether Timer 0 operates as a timer or counter, its resolution (8-bit or 16-bit), the clock source, and the prescaler. Here’s a breakdown of each bit in the T0CON register and its function:
+
+Bit Position	Bit Name	Description
+7	TMR0ON	Timer 0 On/Off Control bit. Set to 1 to enable Timer 0; set to 0 to turn it off.
+6	T08BIT	Timer 0 8-bit/16-bit Control bit. Set to 1 for 8-bit mode, 0 for 16-bit mode.
+5	T0CS	Timer 0 Clock Source Select bit. Set to 0 to use the internal clock, 1 to use an external clock (T0CKI).
+4	T0SE	Timer 0 Source Edge Select bit (used in counter mode). Set to 1 to increment on a high-to-low transition, 0 for low-to-high.
+3	PSA	Prescaler Assignment bit. Set to 1 to bypass the prescaler, 0 to enable it for Timer 0.
+2-0	T0PS2
+Prescaler Rate Select bits. These bits set the prescaler rate when enabled (e.g., 1:2, 1:4, etc.).
+Working of T0CON
+Enable/Disable Timer 0 (TMR0ON): When this bit is set to 1, Timer 0 starts counting based on the selected mode and clock source. When set to 0, Timer 0 stops.
+
+Select 8-bit or 16-bit Mode (T08BIT): Choosing 8-bit mode limits the timer to an 8-bit count (0-255), while 16-bit mode allows it to count up to 65,535, providing a longer delay or higher count range.
+
+Clock Source Selection (T0CS): Determines whether Timer 0 increments on the internal clock (used in Timer Mode) or on an external clock input (used in Counter Mode).
+
+Edge Select for External Clock (T0SE): In Counter Mode, this bit specifies whether Timer 0 increments on the rising or falling edge of an external pulse.
+
+Prescaler Configuration (PSA and T0PS2:T0PS0): The prescaler divides the input clock frequency to slow down the counting speed of Timer 0, allowing for longer intervals. The PSA bit enables or disables the prescaler, while the T0PS2:T0PS0 bits define the division factor.
+
+Summary
+By setting the T0CON register, you can customize Timer 0 for various tasks, such as precise timing in Timer Mode or counting external events in Counter Mode. This flexibility makes Timer 0 versatile for different applications in embedded systems.
+
+--------------------------------------
+       
+8) Write an embedded C program to generate square wave of 100 Hz using timer0 with interrupt. Show detailed calculations.
+
+Calculations:
+Fosc=48MHz,   N=16,   F=100Hz
+Tosc=(1/Fosc),    T=(1/2F)=5ms
+x = T / (4*N*Tosc)
+   =  0.005 / 1.33u                                           (u=10^-6)
+x = 3759
+Count value = 65535 + 1 - x  =  61777
+Hex value of 61777 = F151
+
+       #include <p18f4550.h>
+       extern void _startup (void);
+       void timer_isr(void);
+       #pragma code RESET_INTERRUPT_VECTOR = 0x1000
+       void _reset (void)
+       {
+       	_asm 
+           	             goto _startup 
+       	_endasm
+       }
+       #pragma code
+       void main(void)
+       {	
+       	ADCON1 = 0x0F; 
+       	INTCON2bits.RBPU=0;        
+       	TRISBbits.TRISB0 = 0; 
+       	PORTBbits.RB0 = 0;  	
+       	T0CON = 0x03;		  
+       	TMR0H = 0xF1;         
+       	TMR0L = 0x51;
+       	INTCONbits.TMR0IF = 0; 
+       	INTCONbits.TMR0IE = 1;
+       	INTCONbits.GIE = 1;	
+       	T0CONbits.TMR0ON = 1; 
+       	while(1);             
+       }
+       #pragma code HIGH_INTERRUPT_VECTOR = 0x1008
+       void high_ISR (void)
+       {
+       	_asm 
+       		goto timer_isr
+       	_endasm    
+       }
+       #pragma code
+       ///Timer ISR Function Prototype//
+       #pragma interrupt timer_isr
+       void timer_isr(void)
+       {
+       	TMR0H = 0XF1;  
+       	TMR0L = 0X51;
+       	PORTBbits.RB0 = ~PORTBbits.RB0;
+       	INTCONbits.TMR0IF = 0; 
+       }
+       
+-----------------------
+Timer 0 in microcontrollers like the PIC18F is a versatile 8- or 16-bit timer/counter used for precise timing and counting operations. It can operate in two main modes: Timer Mode and Counter Mode.
+
+Working Principle of Timer 0
+Timer Mode (Increment by Clock Cycle):
+
+In Timer Mode, Timer 0 increments its value at each internal instruction clock cycle (or a prescaled version of it).
+Once the timer reaches its maximum count (255 for 8-bit or 65,535 for 16-bit), it overflows and resets to zero, generating an overflow interrupt if enabled.
+By setting the initial timer value, specific time delays can be created. The overflow interrupt can trigger events after set intervals.
+Counter Mode (Increment by External Event):
+
+In Counter Mode, Timer 0 increments its value based on an external clock source connected to the T0CKI (Timer 0 Clock Input) pin.
+Each pulse or event on the external input pin increases the timer count, making it suitable for counting external events like button presses or pulses from sensors.
+Prescaler and Postscaler:
+
+A prescaler divides the input clock frequency, allowing for longer delays by reducing the increment rate of Timer 0.
+The postscaler can further divide the frequency of overflow events.
+Control Registers
+Timer 0 is controlled by the T0CON register, which allows configuration of:
+
+Timer mode selection (Timer vs. Counter).
+8-bit or 16-bit operation.
+Prescaler assignment and division ratio.
+Enabling/disabling Timer 0.
+Applications
+Timer 0 is commonly used in delay generation, frequency measurement, event counting, and periodic interrupt generation, making it essential for tasks that require precise timing and control in embedded systems.
+
+---------------------------------------------------------------------------------------------------
+       
+9) Write an embedded C program to control the speed of DC motor using PWM. Assume the PWM frequency as 4 KHz with duty cycle of 20% and 40%.
+
+
+PR2-
+The PR2 (Timer 2 Period Register) in the PIC18F microcontroller determines the period of Timer 2. It is an 8-bit register that sets the number of counts before Timer 2 overflows (resets). The value in PR2 controls the frequency of PWM signals when Timer 2 is used for PWM generation. A higher PR2 value results in a lower frequency, while a lower PR2 value increases the frequency. PR2 is crucial for setting time delays and controlling PWM outputs.
+
+
+PR2 Calculation:
+PR2=187
+CCPR1L = 20%  of  187
+                 =  37.4
+Hex value of 37 = 25
+
+CCPR1L = 40%  of  187
+                 =  74.8
+Hex value of 74 = 4A
+
+DC1B1         DC1B0             Decimal value
+     0                    0                               0
+     0                    1                              0.25
+     1                    0                              0.5
+     1                    1                              0.75
+
+
+#include <p18f4550.h>
+#include "vector_relocate.h"
+void myMsDelay(unsigned int time);
+
+void main() {
+    TRISCbits.TRISC2 = 0;
+    TRISD = 0;
+    PR2 = 187;
+    CCP1CON = 0x0C;
+    T2CON = 0x07;
+    PORTDbits.RD5 = 1;
+    PORTDbits.RD6 = 0;
+
+    while (1) {
+        // For 20% Duty cycle
+        CCPR1L = 0x25;
+        CCP1CONbits.DC1B0 = 0;
+        CCP1CONbits.DC1B1 = 1;
+        myMsDelay(3000);
+
+        // For 40% Duty cycle
+        CCPR1L = 0x4A;
+        CCP1CONbits.DC1B0 = 1;
+        CCP1CONbits.DC1B1 = 1;
+        myMsDelay(3000);
+    }
+}
+
+void myMsDelay(unsigned int time) 
+{
+    unsigned int i, j;
+    for (i = 0; i < time; i++)
+    {
+        for (j = 0; j < 710; j++);
+    }
+}
+
+
+----------------------------
+
+10)  Write an embedded C program to control the speed of DC motor using PWM. Assume the PWM frequency as 4 KHz with duty cycle of  60% and 80%.    
+
+Calculation:
+PR2=187
+CCPR1L = 60%  of  187
+                 =  112.2
+Hex value of 112 = 70
+
+CCPR1L = 80%  of  187
+                 =  149.6
+Hex value of 149 = 95
+
+DC1B1         DC1B0             Decimal value
+     0                    0                               0
+     0                    1                              0.25
+     1                    0                              0.5
+     1                    1                              0.75
+
+
+#include <p18f4550.h>
+#include "vector_relocate.h"
+void myMsDelay(unsigned int time);
+
+void main() {
+    TRISCbits.TRISC2 = 0;
+    TRISD = 0;
+    PR2 = 187;
+    CCP1CON = 0x0C;
+    T2CON = 0x07;
+    PORTDbits.RD5 = 1;
+    PORTDbits.RD6 = 0;
+
+    while (1) {
+        // For 60% Duty cycle
+        CCPR1L = 0x70;
+        CCP1CONbits.DC1B0 = 1;
+        CCP1CONbits.DC1B1 = 0;
+        myMsDelay(3000);
+
+        // For 80% Duty cycle
+        CCPR1L = 0x95;
+        CCP1CONbits.DC1B0 = 0;
+        CCP1CONbits.DC1B1 = 1;
+        myMsDelay(3000);
+    }
+}
+
+void myMsDelay(unsigned int time) 
+{
+    unsigned int i, j;
+    for (i = 0; i < time; i++)
+    {
+        for (j = 0; j < 710; j++);
+    }
+}
+
+----------------------------
+
+
+11) Write an embedded C program to control the speed of DC motor using PWM. Assume the PWM frequency as 4 KHz with duty cycle of 50%.  Motor should rotate in clockwise and anticlockwise direction. 
+
+Calculation:
+PR2=187
+CCPR1L = 50%  of  187
+                 =  93.5
+Hex value of 93 = 5D
+
+DC1B1         DC1B0             Decimal value
+     0                    0                               0
+     0                    1                              0.25
+     1                    0                              0.5
+     1                    1                              0.75
+
+#include <p18f4550.h>
+#include "vector_relocate.h"
+void myMsDelay(unsigned int time);
+
+void main() {
+    TRISCbits.TRISC2 = 0;
+    TRISD = 0;
+    PR2 = 187;
+    CCP1CON = 0x0C;
+    T2CON = 0x07;
+    PORTDbits.RD5 = 1;
+    PORTDbits.RD6 = 0;
+
+    while (1) 
+    {
+        // For 50% Duty cycle
+        CCPR1L = 0x5D;
+        CCP1CONbits.DC1B0 = 0;
+        CCP1CONbits.DC1B1 = 1;
+        myMsDelay(3000);
+    }
+}
+
+void myMsDelay(unsigned int time) 
+{
+    unsigned int i, j;
+    for (i = 0; i < time; i++)
+    {
+        for (j = 0; j < 710; j++);
+    }
+}
+
+
+-----------------------------------------------------------------------------------------------------
+
+LCD 
+
+The RS, RW, and E control signals are commonly used in LCD (Liquid Crystal Display) interfacing, particularly when using a parallel interface with microcontrollers like the PIC18F.
+
+1. RS (Register Select):
+Function: It determines whether the data being sent to the LCD is a command or data.
+RS = 0: Selects the Command Register (used for sending commands to the LCD).
+RS = 1: Selects the Data Register (used for sending the data to be displayed on the screen).
+2. RW (Read/Write):
+Function: It controls the read/write operation between the microcontroller and the LCD.
+RW = 0: Selects the Write mode, where data or commands are written to the LCD.
+RW = 1: Selects the Read mode, where data is read from the LCD (e.g., reading the status or busy flag).
+3. E (Enable):
+Function: This signal enables the data/command transfer to the LCD. It acts as a strobe pulse.
+E = 0: The LCD is disabled and does not accept data or commands.
+E = 1: The LCD is enabled and will latch the data/command when the signal is high.
+Summary
+RS: Chooses between command or data mode.
+RW: Selects read or write operation.
+E: Enables the transfer of data or commands to the LCD.
+
+
+--------------------------------
+
+12) Write an embedded C program
+Interface LCD (8 bit mode) to PIC18F4550 to display a message "Welcome" on 1st line and "To Embedded Lab" on 2nd line of LCD. Draw a neat interfacing diagram for the same.
+
+#include<p18f4550.h>
+#include "vector_relocate.h"
+#define LCD_DATA PORTD
+#define ctrl PORTE
+#define rs PORTEbits.RE0
+#define rw PORTEbits.RE1
+#define en PORTEbits.RE2
+void init_LCD(void);
+void LCD_command(unsigned char cmd);
+void LCD_data(unsigned char data);
+void LCD_write_string(static char *str);
+void msdelay (unsigned int time);
+
+void main( void ) 
+{
+	char var1[] = "Welcome";
+	char var2[ ] = "To Embedded Lab";
+	INTCON2bits.RBPU=0;
+	ADCON1=0x0F; 
+        TRISD=0x00;
+        TRISE=0x00;
+	init_LCD();
+	msdelay(15);
+	LCD_write_string(var1);
+        msdelay(15);
+	LCD_command(0xC0);
+	LCD_write_string(var2);
+	while(1);
+}
+
+void init_LCD(void)
+{
+	LCD_command(0x38);
+	msdelay(15);
+	LCD_command(0x01);
+	msdelay(15);
+	LCD_command(0x0E);
+	msdelay(15);
+	LCD_command(0x80);
+	msdelay(15);
+}
+
+void LCD_command(unsigned char cmd)
+{
+	LCD_DATA = cmd;
+	rs = 0;
+	rw = 0;
+	en = 1;
+	msdelay(15);
+	en = 0;
+}
+
+void LCD_data(unsigned char data)
+{
+	LCD_DATA = data;
+	rs = 1;
+	rw = 0;
+	en = 1;
+	msdelay(15);
+	en = 0;
+}
+
+void LCD_write_string(static char *str)
+{
+	int i = 0;
+	while (str[i] != '\0')
+	{
+		LCD_data(str[i]);
+		msdelay(15);
+		i++;
+	}
+}
+
+void msdelay(unsigned int t)
+{
+	unsigned int i,j;
+	for(i=0;i<t;i++)
+	{
+		for(j=0;j<710;j++);
+        }
+}
+
+-----------------------------
+
+13) Write an embedded C program
+Interface LCD (8 bit mode) to PIC18F4550 to display a message "Name of Student" on 1st line and "Seat No." on 2nd line of LCD. Draw a neat interfacing diagram for the same.
+
+#include<p18f4550.h>
+#include "vector_relocate.h"
+#define LCD_DATA PORTD
+#define ctrl PORTE
+#define rs PORTEbits.RE0
+#define rw PORTEbits.RE1
+#define en PORTEbits.RE2
+void init_LCD(void);
+void LCD_command(unsigned char cmd);
+void LCD_data(unsigned char data);
+void LCD_write_string(static char *str);
+void msdelay (unsigned int time);
+
+void main( void ) 
+{
+	char var1[] = "Anurag Thorat";         //Your name
+	char var2[ ] = "T1900503321";        //Your seat number
+	INTCON2bits.RBPU=0;
+	ADCON1=0x0F; 
+        TRISD=0x00;
+        TRISE=0x00;
+	init_LCD();
+	msdelay(15);
+	LCD_write_string(var1);
+        msdelay(15);
+	LCD_command(0xC0);
+	LCD_write_string(var2);
+	while(1);
+}
+
+void init_LCD(void)
+{
+	LCD_command(0x38);
+	msdelay(15);
+	LCD_command(0x01);
+	msdelay(15);
+	LCD_command(0x0E);
+	msdelay(15);
+	LCD_command(0x80);
+	msdelay(15);
+}
+
+void LCD_command(unsigned char cmd)
+{
+	LCD_DATA = cmd;
+	rs = 0;
+	rw = 0;
+	en = 1;
+	msdelay(15);
+	en = 0;
+}
+
+void LCD_data(unsigned char data)
+{
+	LCD_DATA = data;
+	rs = 1;
+	rw = 0;
+	en = 1;
+	msdelay(15);
+	en = 0;
+}
+
+void LCD_write_string(static char *str)
+{
+	int i = 0;
+	while (str[i] != '\0')
+	{
+		LCD_data(str[i]);
+		msdelay(15);
+		i++;
+	}
+}
+
+void msdelay(unsigned int t)
+{
+	unsigned int i,j;
+	for(i=0;i<t;i++)
+	{
+		for(j=0;j<710;j++);
+        }
+}
+
+---------------------------
+       
+14) Write an embedded C program
+Interface LCD (8 bit mode) to PIC18F4550 to display a message "Microcontroller" on 1st line and "Embedded Lab" on 2nd line of LCD. Draw a neat interfacing diagram for the same.
+
+#include<p18f4550.h>
+#include "vector_relocate.h"
+#define LCD_DATA PORTD
+#define ctrl PORTE
+#define rs PORTEbits.RE0
+#define rw PORTEbits.RE1
+#define en PORTEbits.RE2
+void init_LCD(void);
+void LCD_command(unsigned char cmd);
+void LCD_data(unsigned char data);
+void LCD_write_string(static char *str);
+void msdelay (unsigned int time);
+
+void main( void ) 
+{
+	char var1[] = "Microcontroller";
+	char var2[ ] = "Embedded Lab";
+	INTCON2bits.RBPU=0;
+	ADCON1=0x0F; 
+        TRISD=0x00;
+        TRISE=0x00;
+	init_LCD();
+	msdelay(15);
+	LCD_write_string(var1);
+        msdelay(15);
+	LCD_command(0xC0);
+	LCD_write_string(var2);
+	while(1);
+}
+
+void init_LCD(void)
+{
+	LCD_command(0x38);
+	msdelay(15);
+	LCD_command(0x01);
+	msdelay(15);
+	LCD_command(0x0E);
+	msdelay(15);
+	LCD_command(0x80);
+	msdelay(15);
+}
+
+void LCD_command(unsigned char cmd)
+{
+	LCD_DATA = cmd;
+	rs = 0;
+	rw = 0;
+	en = 1;
+	msdelay(15);
+	en = 0;
+}
+
+void LCD_data(unsigned char data)
+{
+	LCD_DATA = data;
+	rs = 1;
+	rw = 0;
+	en = 1;
+	msdelay(15);
+	en = 0;
+}
+
+void LCD_write_string(static char *str)
+{
+	int i = 0;
+	while (str[i] != '\0')
+	{
+		LCD_data(str[i]);
+		msdelay(15);
+		i++;
+	}
+}
+
+void msdelay(unsigned int t)
+{
+	unsigned int i,j;
+	for(i=0;i<t;i++)
+	{
+		for(j=0;j<710;j++);
+        }
+}
+
+
+-------------------------------
+
+15) Write an embedded C program to interface analog voltage 0-5V to internal ADC and display value on LCD.       
+#include <p18f4550.h>
+#include "vector_relocate.h"
+#define LCD_DATA  PORTD               // LCD data port
+#define en PORTEbits.RE2       // enable signal
+#define rw PORTEbits.RE1       // read/write signal
+#define rs PORTEbits.RE0       // register select signal
+
+void LCD_cmd(unsigned char cmd);
+void myMsDelay(unsigned int time) {
+    unsigned int i, j;
+    for (i = 0; i < time; i++)
+   {
+        for (j = 0; j <710; j++);
+   }
+}
+
+void init_LCD(void) {
+    LCD_cmd(0x38);   // initialization of 16X2 LCD in 8bit mode
+    myMsDelay(15);
+
+    LCD_cmd(0x01);   // clear LCD
+    myMsDelay(15);
+
+    LCD_cmd(0x0E);   // cursor off
+    myMsDelay(15);
+
+    LCD_cmd(0x80);  
+    myMsDelay(15);
+}
+
+// Function to pass command to the LCD
+void LCD_cmd(unsigned char cmd) {
+    LCD_DATA = cmd;
+    rs = 0;
+    rw = 0;
+    en = 1;
+    myMsDelay(15);
+    en = 0;
+    myMsDelay(15);
+}
+
+// Function to write data to the LCD
+void LCD_write(unsigned char data) {
+    LCD_DATA = data;
+    rs = 1;
+    rw = 0;
+    en = 1;
+    myMsDelay(15);
+    en = 0;
+    myMsDelay(15);
+}
+
+void main(void) {
+    unsigned int val[4], ADC_Result = 0, var;
+    unsigned char i, str[] = "Result:";
+
+    TRISD = 0x00;    // Configuring PORTD as output
+    TRISE = 0;
+    TRISA = 0xFF;
+    init_LCD();
+
+    // ADC Initialization
+    ADCON1 = 0x0C;  
+    ADCON2 = 0x8E;
+    ADCON0 = 0x09;  // Turn ON ADC module
+
+    LCD_cmd(0x80);
+    for (i = 0; str[i] != '\0'; i++) {
+        LCD_write(str[i]);
+        myMsDelay(200);
+    }
+
+    while (1) {
+        ADCON0bits.GO = 1;
+        while (ADCON0bits.GO == 1);
+        var = ((unsigned int)ADRESH) << 8;
+        ADC_Result = var + ADRESL;
+
+        for (i = 0; i < 4; i++) {
+            val[i] = ADC_Result % 0x0A;
+            val[i] = val[i] + 0x30;
+            ADC_Result = ADC_Result / 0x0A;
+        }
+
+        LCD_cmd(0x87);     // LCD command to set DDRAM address
+        LCD_write(val[3]);
+        LCD_write(val[2]);
+        LCD_write(val[1]);
+        LCD_write(val[0]);
+    }
+}
+

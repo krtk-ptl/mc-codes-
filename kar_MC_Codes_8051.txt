@@ -1,0 +1,604 @@
+﻿MC (8051) Codes 
+
+----------------------------------------------------------------------
+
+Features of 8051 MC -
+
+The 8051 microcontroller is a popular 8-bit microcontroller originally developed by Intel. It has the following key features:
+
+8-bit Processor: The 8051 operates on 8-bit data, meaning it processes 8 bits of data at a time.
+
+ROM/EPROM/Flash Memory: It typically has 4 KB of ROM (Read-Only Memory) for program storage, which can be replaced with EPROM or Flash memory in modern versions.
+
+RAM: It includes 128 bytes of RAM (Random Access Memory) for data storage.
+
+Registers: The 8051 has 32 general-purpose registers (R0-R7 in 4 banks), making it efficient for data manipulation.
+
+Clock Speed: It operates with a clock speed of up to 12 MHz, providing a fast processing speed for various applications.
+
+I/O Ports: It has 4 parallel I/O ports, each 8 bits wide, allowing easy interfacing with external devices.
+
+Timers/Counters: The 8051 has 2 16-bit timers/counters for generating delays and counting external events.
+
+Serial Communication: It features a full-duplex UART (Universal Asynchronous Receiver Transmitter) for serial communication.
+
+Interrupt System: It supports 5 interrupt sources with 2 external interrupts, enabling efficient handling of multiple tasks.
+
+Boolean Processor: The 8051 includes a Boolean processor for performing bit-level operations directly, which is useful in control systems.
+
+On-chip Oscillator: It includes an on-chip oscillator and clock generator for stable timing.
+
+Bit-Addressable Memory: The 8051 has bit-addressable memory areas, allowing individual bits in RAM and special function registers to be accessed and manipulated directly.
+
+The 8051 is widely used in embedded systems due to its reliability, flexibility, and simplicity for small to medium complexity applications. 
+
+
+----------------------------------------------------------------------
+
+1) Write a program in C language
+a) Write a program in C language to TOGGLE ALL the LED's interfaced to port P2 of 8051 / 89C51 continuously with delay of 100 ms. Use looping for delay. 
+
+#include<reg51.h>
+void msdelay(unsigned int);
+void main(void)
+{
+ while(1)
+ {
+   P2 = 0XFF;
+   msdelay(100);
+   P2 = 0X00;
+   msdelay(100);
+ }
+}
+void msdelay(unsigned int itime)
+{
+ unsigned int i,j;
+ for(i=0;i<itime;i++)
+ {
+  for(j=0;j<1275;j++)
+  { }
+ }
+}
+
+--------------------
+
+b) Write a program in C language for up/down counting of HEX numbers up to two digits. Display the result on LEDs connected to PORT2. 
+A] UP hex counter
+#include<reg51.h>
+void msdelay(unsigned int);
+void main(void)
+{
+ unsigned int z;
+ while(1)
+ {	 
+  for(z=0;z<=255;z++)
+  {
+   P2=z;
+   msdelay(500);
+  }
+ }
+}
+void msdelay(unsigned int itime)
+{
+ unsigned int i,j;
+ for(i=0;i<itime;i++)
+ {
+  for(j=0;j<1275;j++)
+  { }
+ }
+}
+
+B] DOWN hex counter
+ #include<reg51.h>
+void msdelay(unsigned int);
+void main(void)
+{
+ unsigned int z;
+ while(1)
+ {	 
+  for(z=255;z>=0;z--)
+  {
+   P2=z;
+   msdelay(500);
+  }
+ }
+}
+void msdelay(unsigned int itime)
+{
+ unsigned int i,j;
+ for(i=0;i<itime;i++)
+ {
+  for(j=0;j<1275;j++)
+  { }
+ }
+}
+
+---------------------
+
+c) Explain DJNZ & ACALL instructions in detail.
+ DJNZ (Decrement and Jump if Not Zero)
+DJNZ stands for "Decrement and Jump if Not Zero." This instruction is used to decrement the contents of a register or a memory location by 1, and then check if the result is zero. If the result is not zero, it jumps to the specified label or address. If the result is zero, the program continues to the next instruction.
+
+
+Syntax:
+
+DJNZ operand, label
+
+Example:
+MOV R2, #05H   ; Load R2 with 5
+LOOP: DJNZ R2, LOOP ; Decrement R2 and jump to LOOP if R2 is not zero
+
+
+ACALL (Absolute Call)
+ACALL stands for "Absolute Call." This instruction is used to call a subroutine located within the same 2 KB page of memory as the instruction itself. It pushes the address of the next instruction onto the stack and then jumps to the subroutine address. After completing the subroutine, the RET instruction can be used to return to the main program.
+
+Syntax:
+
+ACALL label
+
+Example: 
+-------------------------------------------------------------------------------------
+
+2) Write a program in C language
+a) Write a program in C language for up / down counting of BCD numbers up to two digits. Display the result on LEDs connected to PORT2.
+A] UP BCD counter
+#include<reg51.h>
+void msdelay(unsigned int);
+void main(void)
+{
+ unsigned int x,y;
+ while(1)
+ {
+  for(x=0;x<=9;x++)
+  {
+    for(y=0;y<=9;y++)
+    { 
+      P2=(x<<4)|y;
+      msdelay(500);
+    }
+  }
+ }
+} 
+void msdelay(unsigned int itime)
+{
+ unsigned int i,j;
+ for(i=0;i<itime;i++)
+ {
+  for(j=0;j<1275;j++)
+  {}
+ }
+}
+
+
+B] DOWN BCD counter
+#include<reg51.h>
+void msdelay(unsigned int);
+void main(void)
+{
+ unsigned int x,y;
+ while(1)
+ {
+  for(x=9;x>=0;x--)
+  {
+    for(y=9;y>=0;y--)
+    { 
+      P2=(x<<4)|y;
+      msdelay(500);
+    }
+  }
+ }
+} 
+void msdelay(unsigned int itime)
+{
+ unsigned int i,j;
+ for(i=0;i<itime;i++)
+ {
+  for(j=0;j<1275;j++)
+  {}
+ }
+}
+
+--------------
+
+b) Write a program in C language to display ASCII values from 'A' to 'Z' on LEDs connected to PORT2.
+       #include<reg51.h>
+void msdelay(unsigned int);
+void main(void)
+{
+ unsigned int z;
+ while(1)
+ {	 
+  for(z='A';z<='Z';z++)
+  {
+   P2=z;
+   msdelay(500);
+  }
+ }
+}
+void msdelay(unsigned int itime)
+{
+ unsigned int i,j;
+ for(i=0;i<itime;i++)
+ {
+  for(j=0;j<1275;j++)
+  {}
+ }
+}
+
+
+----------------------------
+
+1. CJNE (Compare and Jump if Not Equal)
+CJNE stands for "Compare and Jump if Not Equal." This instruction compares the value in a specified register or memory location with an immediate value or another register. If they are not equal, it jumps to a specified label or address and sets the CY (Carry) flag if the source value is less than the compared value. If they are equal, the program continues with the next instruction without jumping.
+
+Syntax:
+
+CJNE operand1, operand2, label
+operand1: A register (like A, R0-R7) or a direct memory address.
+operand2: An immediate value or a register to compare with operand1.
+label: The address or label to jump to if operand1 is not equal to operand2.
+
+2. SJMP (Short Jump)
+SJMP stands for "Short Jump." This is a relative jump instruction used for short distances within a range of -128 to +127 bytes from the current instruction. It moves the program counter (PC) to the address specified by the label.
+
+Syntax:
+
+SJMP label
+label: The address or label within -128 to +127 bytes relative to the current address.
+Example:
+
+assembly
+Copy code
+LOOP:   SJMP LOOP ; Creates an infinite loop by jumping to itself
+
+
+-----------------------------------------------------------------------------------------------------------
+
+
+3) Write a program in C language
+Write a program to interface DAC 808 to 8051. Apply the digital input to obtain a square wave & sine wave. 
+a) Square wave
+#include<reg51.h>
+void msdelay(unsigned int);
+void main(void)
+{
+ while(1)
+ {
+   P1 = 0X00;
+   msdelay(500);
+   P1 = 0XFF;
+   msdelay(500);
+ }
+}
+void msdelay(unsigned int itime)
+{
+ unsigned int i,j;
+ for(i=0;i<itime;i++)
+ {
+  for(j=0;j<1275;j++)
+  {}
+ }
+}
+
+b) Sine wave
+#include<reg51.h>
+void main(void)
+{
+ unsigned char sinvalue[12] = {128,192,238,255,238,192,128,64,17,0,17,64};
+ unsigned char i;
+ while(1)
+ { 
+   for(i=0;i<12;i++)
+   {
+     P1 = sinvalue[i];
+   }
+ }
+}
+
+
+4) Write a program in C language
+Write a program to interface DAC 808 to 8051. Apply the digital input to obtain a triangular wave & sine wave.
+a) Triangular wave
+#include<reg51.h>
+void main(void)
+{
+ unsigned int x,y;
+ while(1)
+ {
+   for(x=0;x<255;x++)
+   {
+     P1 = x;
+   }
+   for(y=255;y>0;y--)
+   {
+     P1 = y;
+   }
+ }
+}
+
+b) Sine wave
+#include<reg51.h>
+void main(void)
+{
+ unsigned char sinvalue[12] = {128,192,238,255,238,192,128,64,17,0,17,64};
+ unsigned char i;
+ while(1)
+ { 
+   for(i=0;i<12;i++)
+   {
+     P1 = sinvalue[i];
+   }
+ }
+}
+
+-------------------
+
+The DAC808 is an 8-bit Digital-to-Analog Converter (DAC) widely used for converting digital signals to analog voltages. It operates on the principle of binary-weighted current steering, where each digital input bit contributes a proportional current to the output based on its binary weight.
+
+Basic Principle
+The DAC808 receives an 8-bit digital input, where each bit (D0-D7) represents a specific weight. The DAC outputs an analog current based on the binary value of these bits. The output current is proportional to the digital code, producing an analog signal that corresponds to the digital input.
+
+Working
+Binary-Weighted Current Sources: The DAC808 has an internal network of current sources, each weighted according to binary values (like 1, 2, 4, 8, etc.). The highest bit (MSB) has the largest weight, and the lowest bit (LSB) has the smallest.
+
+Current Steering Network: Based on the digital input code, the DAC switches the current sources on or off, steering current to an internal output node. Each active bit adds its respective current, combining to form a total output current proportional to the binary input code.
+
+Output Current to Voltage Conversion: The analog current output can be converted to a voltage using an external op-amp and resistor (acting as a current-to-voltage converter). The final output voltage is proportional to the digital input and can vary smoothly as the digital input code changes.
+
+
+
+----------------------------------------------------------------------------------------------------------------
+ 
+5) Write a program in C language
+a) Write a program to interface stepper motor to 8051 and rotate it clock-wise / anti clockwise direction continuously.
+A] Clockwise direction
+#include<reg51.h>
+void msdelay(unsigned int);
+void main(void)
+{
+  while(1)
+  {
+          P1 = 0X06;
+          msdelay(500);
+          P1 = 0X0C;
+          msdelay(500);
+          P1 = 0X09;
+          msdelay(500);
+          P1 = 0X03;
+          msdelay(500);
+  }
+}
+void msdelay(unsigned int time)
+{ 
+  unsigned int i,j;
+  for(i=0;i<time;i++)
+  {
+    for(j=0;j<1275;j++)
+    {}
+  }
+}
+
+B] Anticlockwise direction
+#include<reg51.h>
+void msdelay(unsigned int);
+void main(void)
+{
+  while(1)
+  {
+         P1 = 0X03;
+         msdelay(500);
+         P1 = 0X09;
+         msdelay(500);
+         P1 = 0X0C;
+         msdelay(500);
+         P1 = 0X06;
+         msdelay(500);
+  }
+}
+void msdelay(unsigned int time)
+{ 
+  unsigned int i,j;
+  for(i=0;i<time;i++)
+  {
+    for(j=0;j<1275;j++)
+    {}
+  }
+}
+
+
+b) Draw the complete interfacing diagram & calculate the count to be loaded for rotating the motor through 90 degrees. 
+Calculation
+Step angle = 7.5
+Count value = 90/(7.5*4)
+                         = 3
+ 
+#include<reg51.h>
+void msdelay(unsigned int);
+void main(void)
+{
+  unsigned int k;
+  for(k=0;k<3;k++)
+  {
+     P1 = 0X06;
+     msdelay(500);
+     P1 = 0X0C;
+     msdelay(500);
+     P1 = 0X09;
+     msdelay(500);
+     P1 = 0X03;
+     msdelay(500);
+  }
+  while(1);
+}
+void msdelay(unsigned int time)
+{ 
+  unsigned int i,j;
+  for(i=0;i<time;i++)
+  {
+    for(j=0;j<1275;j++)
+    {}
+  }
+}
+------------------------
+
+A STEPPER MOTOR operates based on the principle of electromagnetic induction and magnetic field interaction to convert electrical pulses into discrete mechanical movements, or "steps." This type of motor divides a full rotation into equal steps, making it ideal for precise control of position and speed without needing feedback systems.
+
+Working Principle
+Electromagnetic Coils and Rotor: A stepper motor consists of multiple electromagnets (or coils) arranged around a central rotor made of soft iron or a permanent magnet. When these coils are energized in a specific sequence, they create magnetic fields that interact with the rotor.
+
+Step-by-Step Rotation: By energizing the coils in a controlled sequence, the motor "steps" from one position to the next as the rotor aligns itself with the magnetic field of the energized coil. Each pulse sent to the motor causes it to move one step, allowing for fine positional control.
+
+Types of Stepper Motors:
+
+Permanent Magnet (PM): Uses a permanent magnet rotor and provides moderate step precision.
+Variable Reluctance (VR): Uses a non-magnetic, soft iron rotor with toothed edges for higher step precision.
+Hybrid Stepper Motor: Combines PM and VR features for high precision and torque.
+Full-Step and Half-Step Modes: Stepper motors can operate in full-step, half-step, or micro-stepping modes to achieve varying levels of resolution and smoothness.
+
+
+
+-----------------------------------------------------------------------------------------------------------------
+6) Write a program in C language
+a) Write a program to interface stepper motor to 8051 and rotate it clock-wise / anti clockwise direction continuously.
+   DONE  above
+
+b) Draw the complete interfacing diagram & calculate the count to be loaded for rotating the motor through 180 degrees. 
+Calculation
+Step angle = 7.5
+Count value = 180/(7.5*4)
+     Count value = 6
+
+#include<reg51.h>
+void msdelay(unsigned int);
+void main(void)
+{
+  unsigned int k;
+  for(k=0;k<6;k++)
+  {
+     P1 = 0X06;
+     msdelay(500);
+     P1 = 0X0C;
+     msdelay(500);
+     P1 = 0X09;
+     msdelay(500);
+     P1 = 0X03;
+     msdelay(500);
+  }
+  while(1);
+}
+void msdelay(unsigned int time)
+{ 
+  unsigned int i,j;
+  for(i=0;i<time;i++)
+  {
+    for(j=0;j<1275;j++)
+    {}
+  }
+}
+
+
+---------------------------------------------------------------------------------------------------------------------
+
+7) Write a program in Assembly / C language
+a) Write a program to perform addition, subtraction of two 16-bit numbers. Store the result in RAM locations 50H (LS Byte) & 51H (MS Byte).
+
+First 16 bit number = 1208H
+Second 16 bit number = A56DH
+Result :    12   08
+               + A5   6D
+                  B7    75
+RAM address            Data
+      50H                    08H+6DH
+      51H                  12H+A5H+carry
+
+A] Addition
+ORG 00H
+CLR C
+MOV A, #08H
+ADD A, #6DH
+MOV 50H, A
+
+MOV A, #12H
+ADDC A, #A5H
+MOV 51H, A
+MOV 52H, C
+END
+
+
+B] Subtraction
+55ACH - 1234H = 4378H
+
+ORG 00H
+CLR C
+MOV A, #ACH
+SUBB A, #34H
+MOV 50H, A
+
+MOV A, #55H
+SUBB A, #12H
+MOV 51H, A
+MOV 52H, C
+END
+
+
+-------------------------
+
+b) Write a program for non overlapping (10 Bytes from 20H to 40H onwards) and overlapping (10 Bytes from 20H to 25H onwards) memory block transfer.
+A] Non overlapping
+ORG 00H
+MOV R2, #0AH
+MOV R0, #20H
+MOV R1, #40H
+loop : MOV A, @R0
+MOV @R1, A
+INC R0
+INC R1
+DJNZ R2, loop
+END 
+ 
+
+B] Overlapping
+ORG 00H
+MOV R2, #0AH
+MOV R0, #29H
+MOV R1, #2EH
+loop : MOV A, @R0
+MOV @R1, A
+DEC R0
+DEC R1
+DJNZ R2, loop
+END 
+
+----------------------
+
+
+C) Draw and explain PSW register
+The Program Status Word (PSW) register in an 8051 microcontroller is an 8-bit register that holds important status bits for the microcontroller. These bits provide information on the processor's state, such as carry flags, auxiliary carry, register bank selection, overflow, and parity.
+
+Here is a brief explanation of each bit:
+
+Bit Position	Bit Name	Description
+7	CY	Carry flag. Set when there is a carry in arithmetic operations.
+6	AC	Auxiliary Carry flag. Used for BCD (Binary Coded Decimal) arithmetic.
+5	F0	User-defined flag (available for general-purpose use).
+4	RS1	Register Bank Select Bit 1. Used to select one of four register banks.
+3	RS0	Register Bank Select Bit 0. Works with RS1 to select the register bank.
+2	OV	Overflow flag. Set when an arithmetic overflow occurs.
+1	-	Reserved (not used in standard 8051 operation).
+0	P	Parity flag. Set if the number of 1s in the accumulator is odd.
+
+Register Bank Selection (RS1 and RS0)
+00 selects Register Bank 0
+01 selects Register Bank 1
+10 selects Register Bank 2
+11 selects Register Bank 3
+Here's a diagram for the PSW register:
+  CY | AC | F0 | RS1 | RS0 | OV | -- | P
+
+
+-------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
